@@ -5,7 +5,7 @@ A great fan game by 3 developers: Dominicentek, Koop the Koopa and Batata Douce.
 It includes alot of Game Styles, Bootlegs (That's right!) and other cool features!
 
 # Where can I play it?
-This is the link to play: https://dominicentek.github.io/SuperMarioMakerNET/
+This is the link to play: https://smm-net.github.io/smm-net-prototype/
 
 # Legal Info
 THIS IS NO WAY PLANNED NOR AFFILIATED WITH NINTENDO!
