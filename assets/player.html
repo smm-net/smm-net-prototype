@@ -1,0 +1,840 @@
+<html>
+<head>
+<title>SMM.NET Level Player</title>
+<link href="./smbs/serverimg.png" rel="shortcut icon">
+<script src="./js/html2canvas.js"></script>
+<script>
+var developerMode = false
+
+var tempsong = "";
+var keyboardMap = [
+  "", // [0]
+  "", // [1]
+  "", // [2]
+  "CANCEL", // [3]
+  "", // [4]
+  "", // [5]
+  "HELP", // [6]
+  "", // [7]
+  "BACK_SPACE", // [8]
+  "TAB", // [9]
+  "", // [10]
+  "", // [11]
+  "CLEAR", // [12]
+  "ENTER", // [13]
+  "ENTER_SPECIAL", // [14]
+  "", // [15]
+  "SHIFT", // [16]
+  "CONTROL", // [17]
+  "ALT", // [18]
+  "PAUSE", // [19]
+  "CAPS_LOCK", // [20]
+  "KANA", // [21]
+  "EISU", // [22]
+  "JUNJA", // [23]
+  "FINAL", // [24]
+  "HANJA", // [25]
+  "", // [26]
+  "ESCAPE", // [27]
+  "CONVERT", // [28]
+  "NONCONVERT", // [29]
+  "ACCEPT", // [30]
+  "MODECHANGE", // [31]
+  "SPACE", // [32]
+  "PAGE_UP", // [33]
+  "PAGE_DOWN", // [34]
+  "END", // [35]
+  "HOME", // [36]
+  "LEFT", // [37]
+  "UP", // [38]
+  "RIGHT", // [39]
+  "DOWN", // [40]
+  "SELECT", // [41]
+  "PRINT", // [42]
+  "EXECUTE", // [43]
+  "PRINTSCREEN", // [44]
+  "INSERT", // [45]
+  "DELETE", // [46]
+  "", // [47]
+  "0", // [48]
+  "1", // [49]
+  "2", // [50]
+  "3", // [51]
+  "4", // [52]
+  "5", // [53]
+  "6", // [54]
+  "7", // [55]
+  "8", // [56]
+  "9", // [57]
+  "COLON", // [58]
+  "SEMICOLON", // [59]
+  "LESS_THAN", // [60]
+  "EQUALS", // [61]
+  "GREATER_THAN", // [62]
+  "QUESTION_MARK", // [63]
+  "AT", // [64]
+  "A", // [65]
+  "B", // [66]
+  "C", // [67]
+  "D", // [68]
+  "E", // [69]
+  "F", // [70]
+  "G", // [71]
+  "H", // [72]
+  "I", // [73]
+  "J", // [74]
+  "K", // [75]
+  "L", // [76]
+  "M", // [77]
+  "N", // [78]
+  "O", // [79]
+  "P", // [80]
+  "Q", // [81]
+  "R", // [82]
+  "S", // [83]
+  "T", // [84]
+  "U", // [85]
+  "V", // [86]
+  "W", // [87]
+  "X", // [88]
+  "Y", // [89]
+  "Z", // [90]
+  "OS_KEY", // [91] Windows Key (Windows) or Command Key (Mac)
+  "", // [92]
+  "CONTEXT_MENU", // [93]
+  "", // [94]
+  "SLEEP", // [95]
+  "NUMPAD0", // [96]
+  "NUMPAD1", // [97]
+  "NUMPAD2", // [98]
+  "NUMPAD3", // [99]
+  "NUMPAD4", // [100]
+  "NUMPAD5", // [101]
+  "NUMPAD6", // [102]
+  "NUMPAD7", // [103]
+  "NUMPAD8", // [104]
+  "NUMPAD9", // [105]
+  "MULTIPLY", // [106]
+  "ADD", // [107]
+  "SEPARATOR", // [108]
+  "SUBTRACT", // [109]
+  "DECIMAL", // [110]
+  "DIVIDE", // [111]
+  "F1", // [112]
+  "F2", // [113]
+  "F3", // [114]
+  "F4", // [115]
+  "F5", // [116]
+  "F6", // [117]
+  "F7", // [118]
+  "F8", // [119]
+  "F9", // [120]
+  "F10", // [121]
+  "F11", // [122]
+  "F12", // [123]
+  "F13", // [124]
+  "F14", // [125]
+  "F15", // [126]
+  "F16", // [127]
+  "F17", // [128]
+  "F18", // [129]
+  "F19", // [130]
+  "F20", // [131]
+  "F21", // [132]
+  "F22", // [133]
+  "F23", // [134]
+  "F24", // [135]
+  "", // [136]
+  "", // [137]
+  "", // [138]
+  "", // [139]
+  "", // [140]
+  "", // [141]
+  "", // [142]
+  "", // [143]
+  "NUM_LOCK", // [144]
+  "SCROLL_LOCK", // [145]
+  "WIN_OEM_FJ_JISHO", // [146]
+  "WIN_OEM_FJ_MASSHOU", // [147]
+  "WIN_OEM_FJ_TOUROKU", // [148]
+  "WIN_OEM_FJ_LOYA", // [149]
+  "WIN_OEM_FJ_ROYA", // [150]
+  "", // [151]
+  "", // [152]
+  "", // [153]
+  "", // [154]
+  "", // [155]
+  "", // [156]
+  "", // [157]
+  "", // [158]
+  "", // [159]
+  "CIRCUMFLEX", // [160]
+  "EXCLAMATION", // [161]
+  "DOUBLE_QUOTE", // [162]
+  "HASH", // [163]
+  "DOLLAR", // [164]
+  "PERCENT", // [165]
+  "AMPERSAND", // [166]
+  "UNDERSCORE", // [167]
+  "OPEN_PAREN", // [168]
+  "CLOSE_PAREN", // [169]
+  "ASTERISK", // [170]
+  "PLUS", // [171]
+  "PIPE", // [172]
+  "HYPHEN_MINUS", // [173]
+  "OPEN_CURLY_BRACKET", // [174]
+  "CLOSE_CURLY_BRACKET", // [175]
+  "TILDE", // [176]
+  "", // [177]
+  "", // [178]
+  "", // [179]
+  "", // [180]
+  "VOLUME_MUTE", // [181]
+  "VOLUME_DOWN", // [182]
+  "VOLUME_UP", // [183]
+  "", // [184]
+  "", // [185]
+  "SEMICOLON", // [186]
+  "EQUALS", // [187]
+  "COMMA", // [188]
+  "MINUS", // [189]
+  "PERIOD", // [190]
+  "SLASH", // [191]
+  "BACK_QUOTE", // [192]
+  "", // [193]
+  "", // [194]
+  "", // [195]
+  "", // [196]
+  "", // [197]
+  "", // [198]
+  "", // [199]
+  "", // [200]
+  "", // [201]
+  "", // [202]
+  "", // [203]
+  "", // [204]
+  "", // [205]
+  "", // [206]
+  "", // [207]
+  "", // [208]
+  "", // [209]
+  "", // [210]
+  "", // [211]
+  "", // [212]
+  "", // [213]
+  "", // [214]
+  "", // [215]
+  "", // [216]
+  "", // [217]
+  "", // [218]
+  "OPEN_BRACKET", // [219]
+  "BACK_SLASH", // [220]
+  "CLOSE_BRACKET", // [221]
+  "QUOTE", // [222]
+  "", // [223]
+  "META", // [224]
+  "ALTGR", // [225]
+  "", // [226]
+  "WIN_ICO_HELP", // [227]
+  "WIN_ICO_00", // [228]
+  "", // [229]
+  "WIN_ICO_CLEAR", // [230]
+  "", // [231]
+  "", // [232]
+  "WIN_OEM_RESET", // [233]
+  "WIN_OEM_JUMP", // [234]
+  "WIN_OEM_PA1", // [235]
+  "WIN_OEM_PA2", // [236]
+  "WIN_OEM_PA3", // [237]
+  "WIN_OEM_WSCTRL", // [238]
+  "WIN_OEM_CUSEL", // [239]
+  "WIN_OEM_ATTN", // [240]
+  "WIN_OEM_FINISH", // [241]
+  "WIN_OEM_COPY", // [242]
+  "WIN_OEM_AUTO", // [243]
+  "WIN_OEM_ENLW", // [244]
+  "WIN_OEM_BACKTAB", // [245]
+  "ATTN", // [246]
+  "CRSEL", // [247]
+  "EXSEL", // [248]
+  "EREOF", // [249]
+  "PLAY", // [250]
+  "ZOOM", // [251]
+  "", // [252]
+  "PA1", // [253]
+  "WIN_OEM_CLEAR", // [254]
+  "" // [255]
+];
+var movingInterval
+var runningonphone = false;
+if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)){
+ runningonphone = true;
+}
+
+var elem = document.documentElement
+function fullScr() {
+if (elem.requestFullscreen) {
+elem.requestFullscreen();
+} else if (elem.mozRequestFullScreen) {
+elem.mozRequestFullScreen();
+} else if (elem.webkitRequestFullscreen) {
+elem.webkitRequestFullscreen();
+} else if (elem.msRequestFullscreen) {
+elem.msRequestFullscreen();
+}
+}
+var camera = {"pos": {"x": 0, "y": 0}, "speed": {"x": 10, "y": 10}, "dimensions": {"width": 0, "height": 0, "level": {"width": 0, "height": 0}}}
+var mario = {"right": 0, "left": 0, "jump": false, "element": undefined, "speed": {"x": 3, "y": 5}}
+var controller = {"jump": 0, "left": 0, "right": 0, "scrollUp": 0, "scrollDown": 0, "scrollLeft": 0, "scrollRight": 0}
+var repeatRate = 25
+var awaitActive = false;
+var awaitInput = false;
+
+function KeyboardController(keys, repeat) {
+var timers= {};
+document.onkeydown= function(event) {
+var key= (event || window.event).keyCode;
+if (!(key in keys))
+return true;
+if (!(key in timers)) {
+timers[key]= null;
+keys[key]();
+if (repeat!==0)
+timers[key]= setInterval(keys[key], repeat);
+}
+return false;
+};
+document.onkeyup= function(event) {
+if(keys[mRunBTN]) mario.speed.x = 3
+var key= (event || window.event).keyCode;
+if (key in timers) {
+if (timers[key]!==null)
+clearInterval(timers[key]);
+delete timers[key];
+}
+};
+window.onblur= function() {
+for (key in timers)
+if (timers[key]!==null)
+clearInterval(timers[key]);
+timers= {};
+};
+};
+
+var table;
+var preventScroll = true;
+var collision;
+var inair;
+var falling;
+var marioPos = {"x": 0, "y": 0, "drawPos": {"x": 0, "y": 0}}
+var mLeftBTN
+var mRightBTN
+var mJumpBTN
+var mRunBTN
+var cLeftBTN
+var cRightBTN
+var cUpBTN
+var cDownBTN
+var textNode;
+var file
+var coins = 0
+var lives = 3
+var originalPos = {"draw": {"x": 0, "y": 0}, "x": 0, "y": 0}
+
+var collMap = []
+
+function prepare() {
+textNode = document.getElementById('text')
+camera.dimensions.width = document.body.clientWidth
+camera.dimensions.height = document.body.clientHeight
+document.getElementById('snetlvl').click()
+mLeftBTN = parseInt(document.getElementById('mLeft').getAttribute('keycode'))
+mRightBTN = parseInt(document.getElementById('mRight').getAttribute('keycode'))
+mJumpBTN = parseInt(document.getElementById('mJump').getAttribute('keycode'))
+mRunBTN = parseInt(document.getElementById('mRun').getAttribute('keycode'))
+var keys = {}
+keys[mLeftBTN] = function() { move('left'); }
+keys[mRightBTN] = function() { move('right'); }
+keys[mJumpBTN] = function() { jump(); }
+keys[mRunBTN] = function() { mario.speed.x = 5; }
+KeyboardController(keys, repeatRate);
+}
+function readSnetlvl() {
+document.getElementById('backgroundSong').pause()
+textNode.innerHTML = 'Loading...'
+document.body.appendChild(textNode)
+if (!file) file = document.getElementById("snetlvl").files[0];
+if (file) {
+document.getElementById('config').remove()
+if (!mLeftBTN || !mRightBTN || !mJumpBTN) {
+var warningText = document.createElement('text')
+if (!runningonphone) warningText.innerHTML = 'Warning: Some keys are not mapped. You may not be able to fully move Mario.'
+warningText.setAttribute('style', 'position: absolute; bottom: 10px; left: 10px')
+document.body.appendChild(warningText)
+}
+var reader = new FileReader();
+reader.readAsText(file, "UTF-8");
+reader.onload = function (evt) {
+var marioFound = false;
+var marioFoundMore = false;
+var result = evt.target.result.split('./assets/').join('./')
+var div = document.createElement('div')
+document.body.appendChild(div)
+div.innerHTML = result
+var music = document.getElementById('bgmusic')
+table = document.getElementById('editorgrid').firstElementChild
+var collmapfound = Boolean(document.getElementsByTagName('collision')[0])
+var collmap;
+if (collmapfound) collmap = document.getElementsByTagName('collision')[0]
+table = reverseTableRows(table)
+var canvas = document.getElementById('level')
+var context = canvas.getContext("2d");
+camera.dimensions.level.width = table.rows[0].cells.length * 32
+camera.dimensions.level.height = table.rows.length * 32
+document.getElementById('level').setAttribute('width', camera.dimensions.level.width)
+document.getElementById('level').setAttribute('height', camera.dimensions.level.height)
+if (document.getElementById('level').width > camera.dimensions.width) document.getElementById('level').width = camera.dimensions.width
+if (document.getElementById('level').height > camera.dimensions.height) document.getElementById('level').height = camera.dimensions.height
+setTimeout(function() {
+collMap.push(["-1"])
+for (var i = 0, row; row = table.rows[i]; i++) {
+collMap[0].push("-1")
+}
+for (var i = 0, row; row = table.rows[i]; i++) {
+if (collmapfound) collMap.push(["-1"])
+for (var j = 0, col; col = row.cells[j]; j++) {
+if (collmapfound) collMap[i + 1].push(collmap.children[i].children[j].getAttribute('collindex'))
+if (col.firstElementChild.firstElementChild.innerHTML !== '') {
+var y = i * 32 + 32
+context.drawImage(col.firstElementChild.firstElementChild.firstElementChild, j * 32, canvas.clientHeight - y, 32, 32);
+if (col.firstElementChild.firstElementChild.firstElementChild.src.includes('mario.png') && !marioFound) {
+marioPos.x = j * 32
+marioPos.y = (camera.dimensions.level.height - (i * 32)) - 32
+document.getElementById('level').getContext('2d').clearRect(marioPos.x, marioPos.y, 32, 32)
+var marioImage = col.firstElementChild.firstElementChild.firstElementChild.src
+mario.element = document.createElement('img')
+mario.element.setAttribute('src', marioImage)
+mario.element.setAttribute('id',"marioimg")
+var distanceX = (camera.dimensions.width - canvas.width) / 2
+var distanceY = (camera.dimensions.height - canvas.height) / 2
+var offscreenDistanceY = camera.dimensions.level.height - canvas.height
+if (distanceY < 0) distanceY = 0;
+if (offscreenDistanceY < 0) offscreenDistanceY = 0;
+marioPos.drawPos.x = marioPos.x + distanceX
+marioPos.drawPos.y = (marioPos.y - offscreenDistanceY) + distanceY
+mario.element.setAttribute('style', 'position: absolute; top: ' + marioPos.drawPos.y + 'px; left: ' + marioPos.drawPos.x + 'px')
+document.body.appendChild(mario.element)
+if (marioFound) marioFoundMore = true
+else marioFound = true
+}
+}
+}
+if (collmapfound) collMap[i].push("-1")
+}
+collMap[collMap.length - 1].push("-1")
+collMap.push([])
+for (var i = 0; i < collMap[0].length; i++) {
+collMap[collMap.length - 1][i] = "-1"
+}
+originalPos.x = marioPos.x
+originalPos.y = marioPos.y
+originalPos.draw.x = marioPos.drawPos.x
+originalPos.draw.y = marioPos.drawPos.y
+if (marioFound && !marioFoundMore && collmapfound) {
+preventScroll = false;
+textNode.innerHTML = ''
+music.play()
+var ui = document.createElement('div')
+ui.setAttribute('style', 'top: 0px; left: 0px; position: absolute; width: 100%')
+ui.setAttribute('id', 'uiContainer')
+ui.innerHTML = '<img src="./smb/coin.png" style="left: 8px; top: 8px; position: absolute"><text id="coinCounter" style="left: 48px; top: 16px; position: absolute"> x 0</text><img src="./smb/mario.png" style="left: 8px; top: 48px; position: absolute"><text id="lifeCounter" style="left: 48px; top: 56px; position: absolute"> x 3</text>'
+document.body.appendChild(ui)
+if (runningonphone) {
+var buttons = document.createElement('div')
+buttons.setAttribute('style', 'bottom: 10px; left: 10px; width: calc(100% - 20px); height: 50px; position: absolute')
+buttons.innerHTML = "<button onpointerdown=\"movingInterval = setInterval(function() { move('left') }, 35)\" onpointerup=\"clearInterval(movingInterval)\" style=\"top: 0px; left: 0px; position: absolute; width: 50px; height: 50px\"><</button><button onpointerdown=\"movingInterval = setInterval(function() { move('right') }, 35)\" onpointerup=\"clearInterval(movingInterval)\" style=\"left: 55px; top: 0px; position: absolute; width: 50px; height: 50px\">></button><button onclick=\"jump()\" style=\"top: 0px; right: 0px; position: absolute; width: 50px; height: 50px\">^</button><button onpointerdown=\"mario.speed.x = 6\" onpointerup=\"mario.speed.x = 3\" style=\"top: 0px; right: 65px; position: absolute; width: 60px; height: 50px\">Run</button>"
+document.body.appendChild(buttons)
+}
+}
+else {
+context.clearRect(0, 0, canvas.width, canvas.height);
+if (mario.element) mario.element.remove()
+textNode.innerHTML = 'Unable to find Mario in this file or there are 2 or more Marios.'
+}
+if (!collmapfound) {
+context.clearRect(0, 0, canvas.width, canvas.height);
+mario.element.remove()
+textNode.innerHTML = 'Cannot find collision data in your snetlvl file'
+}
+}, 1000)
+div.remove()
+document.body.appendChild(music)
+document.getElementById("another").style.visibility = "visible"
+}
+}
+}
+function reverseTableRows(table) {
+var trContent = []
+for (var i = 0, row; row = table.rows[i]; i++) {
+trContent.push(row.outerHTML)
+}
+trContent.reverse()
+for (var i = 0, row; row = table.rows[i]; i++) {
+row.outerHTML = trContent[i]
+}
+return table
+}
+function scroll(cameraMovement) {
+if (!preventScroll) {
+var canvas = document.getElementById('level')
+var context = canvas.getContext('2d')
+context.clearRect(0, 0, canvas.width, canvas.height);
+if (cameraMovement === 'left' && camera.pos.x !== 0) {
+marioPos.drawPos.x += camera.speed.x
+camera.pos.x += camera.speed.x
+}
+if (cameraMovement === 'right' && -camera.pos.x + camera.dimensions.width <= table.rows[0].cells.length * 32) {
+marioPos.drawPos.x -= camera.speed.x
+camera.pos.x -= camera.speed.x
+}
+if (cameraMovement === 'up' && camera.dimensions.height <= table.rows.length * 32 && camera.pos.y !== 0) {
+marioPos.drawPos.y -= camera.speed.y
+camera.pos.y -= camera.speed.y
+}
+if (cameraMovement === 'down' && camera.dimensions.height <= table.rows.length * 32 && camera.pos.y + camera.dimensions.height < table.rows.length * 32) {
+marioPos.drawPos.y += camera.speed.y
+camera.pos.y += camera.speed.y
+}
+mario.element.style = "position: absolute; left: " + marioPos.drawPos.x + "px; top: " + marioPos.drawPos.y + "px"
+for (var i = 0, row; row = table.rows[i]; i++) {
+for (var j = 0, col; col = row.cells[j]; j++) {
+if (col.firstElementChild.firstElementChild.innerHTML !== '') {
+var y = i * 32 + 32
+var offscreenDistance = camera.dimensions.level.height - camera.dimensions.height
+if (offscreenDistance < 0) offscreenDistance = 0
+if (!col.firstElementChild.firstElementChild.firstElementChild.src.includes('mario.png') && collMap[(Math.floor(((canvas.clientHeight + offscreenDistance) - y) / 32)) + 1][j + 1] != 5) context.drawImage(col.firstElementChild.firstElementChild.firstElementChild, (j * 32) + camera.pos.x, (canvas.clientHeight - y) + camera.pos.y, 32, 32);
+}
+}
+}
+}
+}
+function awaitButton(element) {
+if (!awaitActive) {
+element.blur()
+var prev = element.innerHTML
+awaitActive = true
+awaitInput = true
+var continueCountdown = true
+element.innerHTML = '5'
+document.onkeydown= function(event) {
+if (awaitInput) {
+awaitInput = false
+continueCountdown = false
+awaitActive = false
+element.innerHTML = keyboardMap[event.keyCode];
+element.setAttribute('keycode', event.keyCode)
+}
+if (event.keyCode == 27) {
+awaitInput = false
+continueCountdown = false
+awaitActive = false
+element.innerHTML = 'Click to Set'
+element.setAttribute('keycode', 'undefined')
+}
+}
+setTimeout(function(){
+if (continueCountdown) {
+element.innerHTML = '4'
+setTimeout(function(){
+if (continueCountdown) {
+element.innerHTML = '3'
+setTimeout(function(){
+if (continueCountdown) {
+element.innerHTML = '2'
+setTimeout(function(){
+if (continueCountdown) {
+element.innerHTML = '1'
+setTimeout(function(){
+if (continueCountdown) {
+element.innerHTML = prev
+awaitInput = false
+awaitActive = false
+}
+}, 1000)
+}
+}, 1000)
+}
+}, 1000)
+}
+}, 1000)
+}
+}, 1000)
+}
+}
+function move(dir) {
+var marioimage = document.getElementById("marioimg")
+if (dir === 'left') {
+marioimage.style.transform = "scaleX(-1)"
+if (getCollisionDataByGridPos(getPlayerGridPosition(-0.5, 0)) != 0 && getCollisionDataByGridPos(getPlayerGridPosition(-0.5, 0)) != 2 && getCollisionDataByGridPos(getPlayerGridPosition(-0.5, 0)) != 5) return;
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, 0)) == 2) getCoin()
+marioPos.drawPos.x -= mario.speed.x;
+marioPos.x -= mario.speed.x;
+getCollisionDataByGridPos(getPlayerGridPosition(0, 0))
+if (marioPos.drawPos.x <= 200) scroll('left')
+jump(true)
+}
+if (dir === 'right') {
+marioimage.style.transform = "scaleX(1)"
+if (getCollisionDataByGridPos(getPlayerGridPosition(0.5, 0)) != 0 && getCollisionDataByGridPos(getPlayerGridPosition(0.5, 0)) != 2 && getCollisionDataByGridPos(getPlayerGridPosition(0.5, 0)) != 5) return;
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, 0)) == 2) getCoin()
+marioPos.drawPos.x += mario.speed.x;
+marioPos.x += mario.speed.x;
+getCollisionDataByGridPos(getPlayerGridPosition(0, 0))
+if (marioPos.drawPos.x >= camera.dimensions.width - 200) scroll('right')
+jump(true)
+}
+mario.element.style.left = marioPos.drawPos.x + 'px'
+}
+function jump(fall) {
+if (mario.jump || (fall && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 0 && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 2 && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 5)) return;
+mario.jump = true
+if (!fall) {
+var sfx = new Audio("./jump.wav")
+sfx.play()
+}
+var maxHeight = 40;
+var height = 0;
+var acceleration = 0.25;
+var speed = 5;
+if (fall) speed = -speed;
+var distanceY = (camera.dimensions.height - document.getElementById('level').height) / 2
+if (distanceY < 0) distanceY = 0;
+var offscreenDistance = camera.dimensions.level.height - camera.dimensions.height
+if (offscreenDistance < 0) offscreenDistance = 0
+var origPos = marioPos.y
+var origSpeed = speed
+var interval = setInterval(function() {
+if (height >= maxHeight) speed -= acceleration
+if (speed < 0 && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 0 && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 2 && getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) != 5) {
+clearInterval(interval)
+mario.jump = false
+mario.element.style.top = (marioPos.drawPos.y - (origSpeed / 100)) + 'px'
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, -0.5)) == -1) die()
+return
+}
+if (speed > 0 && getCollisionDataByGridPos(getPlayerGridPosition(0, 0.5)) != 0 && getCollisionDataByGridPos(getPlayerGridPosition(0, 0.5)) != 2 && getCollisionDataByGridPos(getPlayerGridPosition(0, 0.5)) != 5) speed = -speed
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, 0.5)) == 4) getCoin(true)
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, 0.5)) == 3) breakBrick()
+if (getCollisionDataByGridPos(getPlayerGridPosition(0, 0)) == 2) getCoin()
+height += speed
+marioPos.y = origPos - height
+marioPos.drawPos.y = (marioPos.y - offscreenDistance) + distanceY
+mario.element.style.top = marioPos.drawPos.y + 'px'
+}, 15)
+}
+function getPlayerGridPosition(additionalX, additionalY) {
+var x = marioPos.x + (additionalX * 32)
+var y = marioPos.y - (additionalY * 32)
+return [Math.round(x / 32),Math.round(y / 32)]
+}
+function getCollisionDataByGridPos(array) {
+return parseInt(collMap[array[1] + 1][array[0] + 1])
+}
+function die() {
+document.getElementById('level').style.display = "none"
+mario.element.style.display = "none"
+document.getElementById('uiContainer').style.display = "none"
+lives--
+if (lives == 0) {
+document.getElementById("musicsource").src = "gameover.mp3";
+document.getElementById("bgmusic").loop = false;
+document.getElementById("bgmusic").load();
+document.getElementById("bgmusic").play();
+textNode.innerHTML = '<img src="./gameover.png"/>'
+setTimeout(function() {
+location.reload();
+}, 5000)
+return
+}
+tempsong = document.getElementById("musicsource").src
+document.getElementById("musicsource").src = "playerdown.mp3";
+document.getElementById("bgmusic").loop = false;
+document.getElementById("bgmusic").load();
+document.getElementById("bgmusic").play();
+textNode.innerHTML = '<img src="./smb/mario.png"/> -1'
+setTimeout(function() {
+respawn();
+}, 3000)
+}
+function respawn() {
+document.getElementById("musicsource").src = tempsong;
+document.getElementById("bgmusic").loop = true;
+document.getElementById("bgmusic").load();
+document.getElementById("bgmusic").play();
+document.getElementById('level').style.display = "inline"
+document.getElementById('uiContainer').style.display = "inline"
+mario.element.style.display = "inline"
+coins = 0
+document.getElementById('uiContainer').style.display = ""
+document.getElementById('coinCounter').innerHTML = " x 0"
+document.getElementById('lifeCounter').innerHTML = " x " + lives
+marioPos.x = originalPos.x
+marioPos.y = originalPos.y
+marioPos.drawPos.x = originalPos.draw.x
+marioPos.drawPos.y = originalPos.draw.y
+mario.element.style.top = originalPos.draw.y + "px"
+mario.element.style.left = originalPos.draw.x + "px"
+textNode.innerHTML = ""
+}
+function getCoin(questionblock) {
+coins++;
+var sound = new Audio('./sfx/coin.wav')
+sound.play()
+if (coins == 100) {
+lives++;
+coins = 0
+document.getElementById('lifeCounter').innerHTML = ' x ' + lives
+}
+document.getElementById('coinCounter').innerHTML = ' x ' + coins
+if (!questionblock) {
+var position = getPlayerGridPosition(0, 0)
+modifyCollisionData(position, 5)
+scroll()
+}
+else {
+var position = getPlayerGridPosition(0, 0.5)
+modifyCollisionData(position, 1)
+}
+}
+function modifyCollisionData(array, newData) {
+collMap[array[1] + 1][array[0] + 1] = newData
+}
+function breakBrick() {
+var sound = new Audio('./sfx/brick.wav')
+sound.play()
+var position = getPlayerGridPosition(0, 0.5)
+modifyCollisionData(position, 5)
+document.getElementById('level').getContext('2d').clearRect(position[0] * 32, position[1] * 32, 32, 32)
+}
+function loadIntroScreen() {
+if (developerMode) document.getElementById('debuggingHelp').innerHTML = '<h1 style="display: block; left: 50%; position: absolute; transform: translate(-50%, 0px)">Debugging</h1><br><br><br><br><b>TAB</b> Display debug menu<br><b></b>'
+if (runningonphone) {
+document.getElementById('introscreen').remove()
+}
+}
+window.onkeydown = function(event) {
+if (event.keyCode == 9 && developerMode) {
+var debugMenu = document.createElement('div')
+debugMenu.setAttribute('style', 'top: 8px; right: 8px; position: absolute; border: 1px solid black; width: 50%; height: 25%; background-color: #FFFFFF')
+debugMenu.setAttribute('id', 'debugMenu')
+debugMenu.innerHTML = '<div style="overflow-y: scroll; top: 8px; left: 8px; position: absolute; width: calc(100% - 16px); height: calc(100% - 38px)">Life Count: <button onclick="lives++; document.getElementById(\'debugLifeCounter\').innerHTML = \' \' + lives">^</button><button onclick="lives--; document.getElementById(\'debugLifeCounter\').innerHTML = \' \' + lives">v</button><text id="debugLifeCounter"> ' + lives + '</text><br>Coin Count: <button onclick="coins++; document.getElementById(\'debugCoinCounter\').innerHTML = \' \' + coins">^</button><button onclick="coins--; document.getElementById(\'debugCoinCounter\').innerHTML = \' \' + coins">v</button><text id="debugCoinCounter"> ' + coins + '</text><br><button onclick="die()">Die</button><br>Scroll <button onclick="scroll(\'left\')"><</button><button onclick="scroll(\'up\')">^</button><button onclick="scroll(\'down\')">v</button><button onclick="scroll(\'right\')">></button><br>Move <button onclick="move(\'left\')"><</button><button onclick="move(\'right\')">></button><br><button onclick="jump()">Jump</button><br><button onclick="getCoin(true)">Collect Coin</button><br><button onclick="modifyCollisionDialogue(this.parentNode)">Modify Collsion Data</button><br><button onclick="document.getElementById(\'positionresult\').innerHTML = getPlayerGridPosition(document.getElementById(\'additionalX\').value, document.getElementById(\'additionalY\').value).join(\' \')">Get Player Position</button><input type="number" id="additionalX"><input type="number" id="additionalY"><text id="positionresult"></text></div><button onclick="document.getElementById(\'debugMenu\').remove()" style="width: calc(100% - 16px); bottom: 8px; left: 8px; position: absolute">Close</button>'
+document.body.appendChild(debugMenu)
+}
+}
+function modifyCollisionDialogue(node) {
+var html = ''
+for (var i = 0; i < collMap.length; i++) {
+html += "<div style=\"height: 21px; width: " + collMap[i].length * 29 + "\">"
+for (var j = 0; j < collMap[i].length; j++) {
+html += "<button style=\"display: inline; height: 21px; width: 29px\" onclick=\"toggleCollision(this, [" + i + "," + j + "])\">" + collMap[i][j] + "</button>"
+}
+html += "</div>"
+}
+node.innerHTML = html
+node.style = "overflow-x: scroll; top: 8px; left: 8px; position: absolute; width: calc(100% - 16px); height: calc(100% - 38px)"
+}
+function toggleCollision(node, index) {
+if (node.innerHTML == "0") {
+node.innerHTML = "1"
+collMap[index[0]][index[1]] = 1
+}
+else if (node.innerHTML == "1") {
+node.innerHTML = "2"
+collMap[index[0]][index[1]] = 2
+}
+else if (node.innerHTML == "2") {
+node.innerHTML = "3"
+collMap[index[0]][index[1]] = 3
+}
+else if (node.innerHTML == "3") {
+node.innerHTML = "4"
+collMap[index[0]][index[1]] = 4
+}
+else if (node.innerHTML == "4") {
+node.innerHTML = "5"
+collMap[index[0]][index[1]] = 5
+}
+else if (node.innerHTML == "5") {
+node.innerHTML = "0"
+collMap[index[0]][index[1]] = 0
+}
+}
+</script>
+<style>
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  font-family: Arial;
+}
+*  {
+  cursor: url('./cursor.png'), auto;
+}
+button {
+	box-shadow: 0px 1px 0px 0px #fff6af;
+	background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+	background-color:#ffec64;
+	border-radius:6px;
+	border:1px solid #ffaa22;
+	display:inline-block;
+	// cursor:pointer;
+	color:#333333;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:4px 21px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffee66;
+}
+button:hover {
+	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+	background-color:#ffab23;
+}
+.openFile {
+  font-size:36px;
+}
+</style>
+</head>
+<body style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none; overflow: hidden" onload="loadIntroScreen()">
+<audio id='backgroundSong' controls="" autoplay="" loop="" style="display: none"><source src="./player.mp3" type="audio/mpeg"/></audio>
+<div id="config" style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px">
+<div id="introscreen">
+<img style="width: 438px; height: 156px; display: block; left: 50%; position: absolute; transform: translate(-50%, 10px)" src="./logo.png"></img><br>
+<h1 style="display: block; left: 50%; position: absolute; transform: translate(-50%, 145px)"><b><u>Button Config</u></b></h1>
+<br>
+<br>
+<br>
+<br>
+Move Left: <button id="mLeft" onclick="awaitButton(this)" keycode="undefined">Click to Set</button><br>
+Move Right: <button id="mRight" onclick="awaitButton(this)" keycode="undefined">Click to Set</button><br>
+Jump: <button id="mJump" onclick="awaitButton(this)" keycode="undefined">Click to Set</button><br>
+Run:  <button id="mRun" onclick="awaitButton(this)" keycode="undefined">Click to Set</button><br><br>
+<div id="debuggingHelp"></div>
+</div>
+<button onclick="prepare()" class="openFile" style="width: 100%; height: 100px; position: absolute; bottom: 0px; left: 0px">Open .snetlvl File</button>
+<input type="file" style="display: none" accept=".snetlvl" id="snetlvl" onchange="readSnetlvl()">
+</div>
+<canvas id="level" style="pointer-events: none; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)"></canvas>
+<text id="text" style="font-size: 48px; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)"></text>
+<a href="../index.html" style="top: 64px; right: 10px; position: absolute"><button>Return to Editor</button></a>
+<button style="top: 32px; right: 10px; position: absolute; visibility: hidden" id="another" onclick="location.reload()">Load Another Level</button>
+</body>
+</html>
